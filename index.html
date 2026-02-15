@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobil Strateji Raporu: Gelinlik Beyaz Rüya</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #C5A059;
+            --charcoal: #1A1A1A;
+            --ivory: #FAF9F6;
+        }
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: var(--charcoal); 
+            color: var(--charcoal);
+            margin: 0;
+            padding: 0;
+        }
+        .mobile-container {
+            background-color: var(--ivory);
+            max-width: 480px; /* Mobil genişlik kısıtlaması */
+            margin: 0 auto;
+            min-height: 100vh;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        }
+        h1, h2, h3, h4, .serif { font-family: 'Playfair Display', serif; }
+        .chart-container { 
+            position: relative; 
+            width: 100%; 
+            height: 280px; 
+            margin: 20px 0;
+        }
+        .luxury-card { 
+            background: white; 
+            border: 1px solid rgba(197, 160, 89, 0.15); 
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .gold-border { border-color: var(--gold); }
+        .text-gold { color: var(--gold); }
+        .bg-gold { background-color: var(--gold); }
+        
+        @media print {
+            body { background-color: white; }
+            .mobile-container { 
+                max-width: 100%; 
+                box-shadow: none; 
+                margin: 0;
+            }
+            .no-print { display: none; }
+            .page-break { page-break-before: always; }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="mobile-container">
+        <!-- Kapak Bölümü -->
+        <header class="bg-white pt-16 pb-12 px-8 text-center border-b border-gray-100">
+            <div class="w-16 h-16 mx-auto border border-gold flex items-center justify-center mb-6" style="border-color:#C5A059">
+                <span class="serif italic text-xl text-gold" style="color:#C5A059">BR</span>
+            </div>
+            <h1 class="text-3xl font-light italic mb-2">Gelinlik Beyaz Rüya</h1>
+            <p class="text-[9px] uppercase tracking-[0.4em] text-gold mb-10" style="color:#C5A059">Mobil Performans Raporu</p>
+            
+            <div class="text-[10px] text-gray-400 uppercase tracking-widest leading-loose">
+                9 Ocak — 9 Şubat 2026<br>
+                Hazırlayan:<br>
+                <span class="text-charcoal font-bold">Semanur Ayyıldız</span><br>
+                Görsel İletişim Tasarımı Uzmanı
+            </div>
+        </header>
+
+        <!-- Yönetici Özeti -->
+        <section class="p-8">
+            <h2 class="text-2xl font-light italic mb-6 text-gray-800">Sistem İşe Yarıyor</h2>
+            <p class="text-sm text-gray-500 font-light leading-relaxed mb-8">
+                Sayın Marka Sahibi, uyguladığımız görsel strateji meyvelerini veriyor. Profil ziyaretlerindeki <strong>8.500</strong> kişilik trafik ve tıklamalardaki <strong>%100 artış</strong>, kurduğumuz sistemin çalıştığını verilere dayalı olarak kanıtlamaktadır.
+            </p>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="luxury-card text-center !p-6">
+                    <p class="text-[8px] uppercase tracking-widest text-gray-400 mb-1">Ziyaret</p>
+                    <div class="serif text-2xl">8.5B</div>
+                    <p class="text-[8px] text-green-600 font-bold">▲ %8.3</p>
+                </div>
+                <div class="luxury-card text-center !p-6">
+                    <p class="text-[8px] uppercase tracking-widest text-gray-400 mb-1">Tıklama</p>
+                    <div class="serif text-2xl">785</div>
+                    <p class="text-[8px] text-green-600 font-bold">▲ %100+</p>
+                </div>
+                <div class="luxury-card text-center !p-6">
+                    <p class="text-[8px] uppercase tracking-widest text-gray-400 mb-1">Mesaj</p>
+                    <div class="serif text-2xl">39</div>
+                    <p class="text-[8px] text-green-600 font-bold">▲ %30</p>
+                </div>
+                <div class="luxury-card text-center !p-6">
+                    <p class="text-[8px] uppercase tracking-widest text-gray-400 mb-1">İçerik</p>
+                    <div class="serif text-2xl">116</div>
+                    <p class="text-[8px] text-gray-400 italic">Son 30 Gün</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Grafikler Bölümü -->
+        <section class="p-8 bg-white page-break">
+            <h3 class="text-xl font-light italic mb-8 border-l-2 border-gold pl-4 text-gray-800" style="border-color:#C5A059">Büyüme Analizi</h3>
+            <div class="luxury-card !p-4 mb-8">
+                <p class="text-[9px] uppercase tracking-widest text-gray-400 mb-4 text-center">Önceki Ay vs Mevcut Ay</p>
+                <div class="chart-container">
+                    <canvas id="growthChart"></canvas>
+                </div>
+            </div>
+            <p class="text-xs text-gray-500 font-light leading-relaxed">
+                337.600 toplam görüntüleme ile marka farkındalığımızı zirvede tutuyoruz. Profil ziyaretlerinin artması, içeriğimizin "ilgi" aşamasından "bağlılık" aşamasına geçtiğini gösterir.
+            </p>
+        </section>
+
+        <!-- Demografi Bölümü -->
+        <section class="p-8 page-break">
+            <h3 class="text-xl font-light italic mb-8 border-l-2 border-gold pl-4 text-gray-800" style="border-color:#C5A059">Hedef Kitle DNA'sı</h3>
+            <div class="luxury-card !p-4">
+                <p class="text-[9px] uppercase tracking-widest text-gray-400 mb-4 text-center">Yaş Dağılımı (25-34 Odaklı)</p>
+                <div class="chart-container" style="height: 200px">
+                    <canvas id="ageChart"></canvas>
+                </div>
+            </div>
+            <div class="luxury-card !p-4">
+                <p class="text-[9px] uppercase tracking-widest text-gray-400 mb-4 text-center">Küresel Erişim % (Görüntüleme)</p>
+                <div class="chart-container" style="height: 180px">
+                    <canvas id="geoChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gelecek Hedefleri -->
+        <section class="p-8 bg-charcoal text-white page-break">
+            <h3 class="text-xl font-light italic mb-10 text-gold" style="color:#C5A059">Mart 2026 Stratejisi</h3>
+            
+            <div class="space-y-8">
+                <div class="flex gap-4">
+                    <span class="serif italic text-2xl text-gold" style="color:#C5A059">01</span>
+                    <div>
+                        <h4 class="text-[10px] uppercase tracking-widest font-bold mb-2">WhatsApp Katalog</h4>
+                        <p class="text-[11px] text-gray-400 font-light leading-relaxed">En iyi 10 model seçilerek yüksek çözünürlüklü ve satış odaklı bir katalog güncellenecek.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <span class="serif italic text-2xl text-gold" style="color:#C5A059">02</span>
+                    <div>
+                        <h4 class="text-[10px] uppercase tracking-widest font-bold mb-2">Haftalık Optimizasyon</h4>
+                        <p class="text-[11px] text-gray-400 font-light leading-relaxed">Gelen sorulara ve tıklamalara göre içerik türü her hafta yeniden şekillenecek.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <span class="serif italic text-2xl text-gold" style="color:#C5A059">03</span>
+                    <div>
+                        <h4 class="text-[10px] uppercase tracking-widest font-bold mb-2">Top 10 Model Seçkisi</h4>
+                        <p class="text-[11px] text-gray-400 font-light leading-relaxed">Veriler ışığında en sevilen 10 model markanın yüzü olarak kataloglaştırılacak.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Alt Bilgi -->
+        <footer class="p-12 text-center bg-white border-t border-gray-100">
+            <p class="serif italic text-lg mb-1 text-gray-900">Semanur Ayyıldız</p>
+            <p class="text-[8px] uppercase tracking-[0.3em] text-gray-400 mb-8">Görsel İletişim Tasarımı Uzmanı</p>
+            
+            <div class="no-print">
+                <button onclick="window.print()" class="w-full py-4 bg-charcoal text-white text-[10px] uppercase tracking-[0.2em] hover:bg-gold transition-all duration-500">
+                    PDF / Mobil Çıktı Al
+                </button>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Grafik Ayarları
+        Chart.defaults.font.family = "'Montserrat', sans-serif";
+        Chart.defaults.color = '#9ca3af';
+
+        const luxuryTooltip = {
+            tooltip: {
+                backgroundColor: '#1A1A1A',
+                titleFont: { family: "'Playfair Display'", size: 12 },
+                bodyFont: { family: "'Montserrat'", size: 10 },
+                cornerRadius: 0,
+                callbacks: {
+                    title: function(items) {
+                        return items[0].chart.data.labels[items[0].dataIndex];
+                    }
+                }
+            }
+        };
+
+        // 1. Büyüme Kıyaslaması
+        new Chart(document.getElementById('growthChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Ziyaret', 'Tıklama', 'Mesaj'],
+                datasets: [
+                    { label: 'Önceki', data: [7800, 350, 30], backgroundColor: '#E5E7EB' },
+                    { label: 'Güncel', data: [8500, 785, 39], backgroundColor: '#C5A059' }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { ...luxuryTooltip, legend: { position: 'bottom', labels: { boxWidth: 8, font: { size: 9 } } } },
+                scales: { y: { display: false }, x: { grid: { display: false } } }
+            }
+        });
+
+        // 2. Yaş Grafiği
+        new Chart(document.getElementById('ageChart'), {
+            type: 'bar',
+            data: {
+                labels: ['18-24', '25-34', '35-44', '45+'],
+                datasets: [{
+                    data: [18.4, 39.6, 18.6, 23.4],
+                    backgroundColor: ['#F3F4F6', '#C5A059', '#D1D5DB', '#E5E7EB']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { ...luxuryTooltip, legend: { display: false } },
+                scales: { y: { display: false }, x: { grid: { display: false } } }
+            }
+        });
+
+        // 3. Bölge Grafiği
+        new Chart(document.getElementById('geoChart'), {
+            type: 'bar',
+            data: {
+                labels: ['TR', 'DE', 'IQ', 'AZ'],
+                datasets: [{
+                    data: [63.2, 7.7, 4.1, 4.4],
+                    backgroundColor: '#C5A059'
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { ...luxuryTooltip, legend: { display: false } },
+                scales: { x: { display: false }, y: { grid: { display: false } } }
+            }
+        });
+    </script>
+</body>
+</html>
