@@ -1,257 +1,314 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mobil Strateji Raporu: Gelinlik Beyaz Rüya</title>
+    <title>kilna | Brand Bible (Full Edition)</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --gold: #C5A059;
-            --charcoal: #1A1A1A;
-            --ivory: #FAF9F6;
-        }
-        body { 
-            font-family: 'Montserrat', sans-serif; 
-            background-color: var(--charcoal); 
-            color: var(--charcoal);
-            margin: 0;
-            padding: 0;
-        }
-        .mobile-container {
-            background-color: var(--ivory);
-            max-width: 480px; /* Mobil genişlik kısıtlaması */
-            margin: 0 auto;
-            min-height: 100vh;
-            box-shadow: 0 0 50px rgba(0,0,0,0.5);
-        }
-        h1, h2, h3, h4, .serif { font-family: 'Playfair Display', serif; }
-        .chart-container { 
-            position: relative; 
-            width: 100%; 
-            height: 280px; 
-            margin: 20px 0;
-        }
-        .luxury-card { 
-            background: white; 
-            border: 1px solid rgba(197, 160, 89, 0.15); 
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .gold-border { border-color: var(--gold); }
-        .text-gold { color: var(--gold); }
-        .bg-gold { background-color: var(--gold); }
-        
-        @media print {
-            body { background-color: white; }
-            .mobile-container { 
-                max-width: 100%; 
-                box-shadow: none; 
-                margin: 0;
-            }
-            .no-print { display: none; }
-            .page-break { page-break-before: always; }
-        }
-    </style>
-</head>
-<body class="antialiased">
-
-    <div class="mobile-container">
-        <!-- Kapak Bölümü -->
-        <header class="bg-white pt-16 pb-12 px-8 text-center border-b border-gray-100">
-            <div class="w-16 h-16 mx-auto border border-gold flex items-center justify-center mb-6" style="border-color:#C5A059">
-                <span class="serif italic text-xl text-gold" style="color:#C5A059">BR</span>
-            </div>
-            <h1 class="text-3xl font-light italic mb-2">Gelinlik Beyaz Rüya</h1>
-            <p class="text-[9px] uppercase tracking-[0.4em] text-gold mb-10" style="color:#C5A059">Mobil Performans Raporu</p>
-            
-            <div class="text-[10px] text-gray-400 uppercase tracking-widest leading-loose">
-                9 Ocak — 9 Şubat 2026<br>
-                Hazırlayan:<br>
-                <span class="text-charcoal font-bold">Semanur Ayyıldız</span><br>
-                Görsel İletişim Tasarımı Uzmanı
-            </div>
-        </header>
-
-        <!-- Yönetici Özeti -->
-        <section class="p-8">
-            <h2 class="text-2xl font-light italic mb-6 text-gray-800">Sistem İşe Yarıyor</h2>
-            <p class="text-sm text-gray-500 font-light leading-relaxed mb-8">
-                Sayın Marka Sahibi, uyguladığımız görsel strateji meyvelerini veriyor. Profil ziyaretlerindeki <strong>8.500</strong> kişilik trafik ve tıklamalardaki <strong>%100 artış</strong>, kurduğumuz sistemin çalıştığını verilere dayalı olarak kanıtlamaktadır.
-            </p>
-
-            <div class="grid grid-cols-2 gap-4">
-                <div class="luxury-card text-center !p-6">
-                    <p class="text-[8px] uppercase tracking-widest text-gray-400 mb-1">Ziyaret</p>
-                    <div class="serif text-2xl">8.5B</div>
-                    <p class="text-[8px] text-green-600 font-bold">▲ %8.3</p>
-                </div>
-                <div class="luxury-card text-center !p-6">
-                    <p class="text-[8px] uppercase tracking-widest text-gray-400 mb-1">Tıklama</p>
-                    <div class="serif text-2xl">785</div>
-                    <p class="text-[8px] text-green-600 font-bold">▲ %100+</p>
-                </div>
-                <div class="luxury-card text-center !p-6">
-                    <p class="text-[8px] uppercase tracking-widest text-gray-400 mb-1">Mesaj</p>
-                    <div class="serif text-2xl">39</div>
-                    <p class="text-[8px] text-green-600 font-bold">▲ %30</p>
-                </div>
-                <div class="luxury-card text-center !p-6">
-                    <p class="text-[8px] uppercase tracking-widest text-gray-400 mb-1">İçerik</p>
-                    <div class="serif text-2xl">116</div>
-                    <p class="text-[8px] text-gray-400 italic">Son 30 Gün</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Grafikler Bölümü -->
-        <section class="p-8 bg-white page-break">
-            <h3 class="text-xl font-light italic mb-8 border-l-2 border-gold pl-4 text-gray-800" style="border-color:#C5A059">Büyüme Analizi</h3>
-            <div class="luxury-card !p-4 mb-8">
-                <p class="text-[9px] uppercase tracking-widest text-gray-400 mb-4 text-center">Önceki Ay vs Mevcut Ay</p>
-                <div class="chart-container">
-                    <canvas id="growthChart"></canvas>
-                </div>
-            </div>
-            <p class="text-xs text-gray-500 font-light leading-relaxed">
-                337.600 toplam görüntüleme ile marka farkındalığımızı zirvede tutuyoruz. Profil ziyaretlerinin artması, içeriğimizin "ilgi" aşamasından "bağlılık" aşamasına geçtiğini gösterir.
-            </p>
-        </section>
-
-        <!-- Demografi Bölümü -->
-        <section class="p-8 page-break">
-            <h3 class="text-xl font-light italic mb-8 border-l-2 border-gold pl-4 text-gray-800" style="border-color:#C5A059">Hedef Kitle DNA'sı</h3>
-            <div class="luxury-card !p-4">
-                <p class="text-[9px] uppercase tracking-widest text-gray-400 mb-4 text-center">Yaş Dağılımı (25-34 Odaklı)</p>
-                <div class="chart-container" style="height: 200px">
-                    <canvas id="ageChart"></canvas>
-                </div>
-            </div>
-            <div class="luxury-card !p-4">
-                <p class="text-[9px] uppercase tracking-widest text-gray-400 mb-4 text-center">Küresel Erişim % (Görüntüleme)</p>
-                <div class="chart-container" style="height: 180px">
-                    <canvas id="geoChart"></canvas>
-                </div>
-            </div>
-        </section>
-
-        <!-- Gelecek Hedefleri -->
-        <section class="p-8 bg-charcoal text-white page-break">
-            <h3 class="text-xl font-light italic mb-10 text-gold" style="color:#C5A059">Mart 2026 Stratejisi</h3>
-            
-            <div class="space-y-8">
-                <div class="flex gap-4">
-                    <span class="serif italic text-2xl text-gold" style="color:#C5A059">01</span>
-                    <div>
-                        <h4 class="text-[10px] uppercase tracking-widest font-bold mb-2">WhatsApp Katalog</h4>
-                        <p class="text-[11px] text-gray-400 font-light leading-relaxed">En iyi 10 model seçilerek yüksek çözünürlüklü ve satış odaklı bir katalog güncellenecek.</p>
-                    </div>
-                </div>
-                <div class="flex gap-4">
-                    <span class="serif italic text-2xl text-gold" style="color:#C5A059">02</span>
-                    <div>
-                        <h4 class="text-[10px] uppercase tracking-widest font-bold mb-2">Haftalık Optimizasyon</h4>
-                        <p class="text-[11px] text-gray-400 font-light leading-relaxed">Gelen sorulara ve tıklamalara göre içerik türü her hafta yeniden şekillenecek.</p>
-                    </div>
-                </div>
-                <div class="flex gap-4">
-                    <span class="serif italic text-2xl text-gold" style="color:#C5A059">03</span>
-                    <div>
-                        <h4 class="text-[10px] uppercase tracking-widest font-bold mb-2">Top 10 Model Seçkisi</h4>
-                        <p class="text-[11px] text-gray-400 font-light leading-relaxed">Veriler ışığında en sevilen 10 model markanın yüzü olarak kataloglaştırılacak.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Alt Bilgi -->
-        <footer class="p-12 text-center bg-white border-t border-gray-100">
-            <p class="serif italic text-lg mb-1 text-gray-900">Semanur Ayyıldız</p>
-            <p class="text-[8px] uppercase tracking-[0.3em] text-gray-400 mb-8">Görsel İletişim Tasarımı Uzmanı</p>
-            
-            <div class="no-print">
-                <button onclick="window.print()" class="w-full py-4 bg-charcoal text-white text-[10px] uppercase tracking-[0.2em] hover:bg-gold transition-all duration-500">
-                    PDF / Mobil Çıktı Al
-                </button>
-            </div>
-        </footer>
-    </div>
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Space+Mono&family=Manrope:wght@200;300;400;500;600;700;800&family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
-        // Grafik Ayarları
-        Chart.defaults.font.family = "'Montserrat', sans-serif";
-        Chart.defaults.color = '#9ca3af';
-
-        const luxuryTooltip = {
-            tooltip: {
-                backgroundColor: '#1A1A1A',
-                titleFont: { family: "'Playfair Display'", size: 12 },
-                bodyFont: { family: "'Montserrat'", size: 10 },
-                cornerRadius: 0,
-                callbacks: {
-                    title: function(items) {
-                        return items[0].chart.data.labels[items[0].dataIndex];
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Manrope', 'sans-serif'], 
+                        serif: ['Cormorant Garamond', 'serif'],
+                        mono: ['Space Mono', 'monospace'],
+                        brand: ['Comfortaa', 'cursive'], 
+                    },
+                    colors: {
+                        brand: {
+                            black: '#121212',
+                            gray: '#888888',
+                            light: '#F4F4F4',
+                            clay: '#C18C74',
+                            paper: '#FFFFFF',
+                            green: '#4A5D4F',
+                            charcoal: '#2C2420'
+                        }
                     }
                 }
             }
+        }
+    </script>
+    <style>
+        :root { --page-width: 210mm; --page-height: 297mm; }
+        body { background-color: #1a1a1a; color: #121212; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        #book-container { width: var(--page-width); margin: 40px auto; position: relative; }
+        .page { width: var(--page-width); height: var(--page-height); background: white; position: relative; overflow: hidden; margin-bottom: 40px; box-shadow: 0 30px 60px rgba(0,0,0,0.3); page-break-after: always; }
+        .grid-layout { display: grid; grid-template-columns: repeat(12, 1fr); grid-column-gap: 4mm; padding: 20mm; height: 100%; position: relative; z-index: 10; }
+        .page-num { position: absolute; bottom: 15mm; right: 20mm; font-family: 'Space Mono', monospace; font-size: 8pt; color: #121212; }
+        .chapter-mark { position: absolute; top: 20mm; left: 20mm; font-family: 'Space Mono', monospace; font-size: 7pt; text-transform: uppercase; letter-spacing: 2px; transform-origin: top left; transform: rotate(-90deg) translateX(-100%); opacity: 0.4; }
+        #sidebar { position: fixed; left: 2rem; top: 50%; transform: translateY(-50%); z-index: 100; }
+        .nav-link:hover .dot { transform: scale(1.5); background-color: #C18C74; }
+        @media screen and (max-width: 1000px) { #sidebar { display: none; } #book-container { width: 95vw; margin: 10px auto; } .page { width: 100%; height: auto; aspect-ratio: 210/297; margin-bottom: 10px; } }
+        @media print { body { background: white; margin: 0; padding: 0; } #book-container { margin: 0; width: 100%; box-shadow: none; } .page { margin: 0; box-shadow: none; page-break-after: always; border: none; } #sidebar, .no-print { display: none !important; } @page { size: A4; margin: 0; } }
+    </style>
+</head>
+<body class="font-sans antialiased">
+
+    <!-- Navigasyon Yan Menü -->
+    <nav id="sidebar" class="no-print">
+        <ul class="space-y-4">
+            <li class="group"><a href="#p1" class="nav-link flex items-center gap-3"><span class="dot w-2 h-2 rounded-full bg-white/20 transition-all"></span><span class="text-[10px] text-white/40 group-hover:text-white uppercase tracking-widest transition-opacity opacity-0 group-hover:opacity-100 font-mono">Kapak</span></a></li>
+            <li class="group"><a href="#chapter-03" class="nav-link flex items-center gap-3"><span class="dot w-2 h-2 rounded-full bg-white/20 transition-all"></span><span class="text-[10px] text-white/40 group-hover:text-white uppercase tracking-widest transition-opacity opacity-0 group-hover:opacity-100 font-mono">03 Logo & Amblem</span></a></li>
+            <li class="group"><a href="#chapter-05" class="nav-link flex items-center gap-3"><span class="dot w-2 h-2 rounded-full bg-white/20 transition-all"></span><span class="text-[10px] text-white/40 group-hover:text-white uppercase tracking-widest transition-opacity opacity-0 group-hover:opacity-100 font-mono">05 Tipografi</span></a></li>
+            <li class="group"><a href="#chapter-08" class="nav-link flex items-center gap-3"><span class="dot w-2 h-2 rounded-full bg-white/20 transition-all"></span><span class="text-[10px] text-white/40 group-hover:text-white uppercase tracking-widest transition-opacity opacity-0 group-hover:opacity-100 font-mono">08 Ambalaj</span></a></li>
+            <li class="group"><a href="#chapter-12" class="nav-link flex items-center gap-3"><span class="dot w-2 h-2 rounded-full bg-white/20 transition-all"></span><span class="text-[10px] text-white/40 group-hover:text-white uppercase tracking-widest transition-opacity opacity-0 group-hover:opacity-100 font-mono">12 Ekosistem</span></a></li>
+        </ul>
+    </nav>
+
+    <div id="book-container">
+
+        <!-- P01: KAPAK -->
+        <div id="p1" class="page">
+            <div class="grid-layout text-brand-black">
+                <div class="col-span-12 flex flex-col justify-between h-full">
+                    <div class="mt-[80mm]">
+                        <h1 class="font-brand font-bold text-[110px] leading-[0.8] -ml-2 tracking-tighter lowercase">kilna</h1>
+                        <p class="font-serif italic text-3xl mt-6 text-brand-clay">Toprağın Ruhu.</p>
+                        <div class="w-16 h-[2px] bg-black mt-8"></div>
+                    </div>
+                    <div class="border-t border-black pt-8 flex justify-between items-end font-mono text-[9px] uppercase tracking-[0.2em]">
+                        <div>
+                            <span class="block text-gray-400 mb-2">Doküman No. 2026-A</span>
+                            Görsel Kimlik Sistemi<br>Standartlar Kılavuzu
+                        </div>
+                        <div class="text-right">
+                            <span class="block text-gray-400 mb-2">Versiyon 2.2</span>
+                            Tüm Hakları Saklıdır
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- P02: İÇİNDEKİLER -->
+        <div id="toc" class="page">
+            <div class="grid-layout content-center">
+                <div class="col-span-12 mb-12">
+                    <span class="font-mono text-[10px] text-brand-clay tracking-[0.3em] uppercase block mb-4">Rehber</span>
+                    <h2 class="font-serif text-6xl italic border-b border-black pb-8">İçerik Dizini</h2>
+                </div>
+                <div class="col-span-12 grid grid-cols-2 gap-x-16 font-mono text-[10px] uppercase tracking-wider">
+                    <div class="space-y-3">
+                        <a href="#chapter-01" class="flex justify-between items-center py-1.5 border-b border-gray-100">
+                            <span class="font-bold">01. Kurumsal Manifesto</span><span>03</span>
+                        </a>
+                        <a href="#chapter-02" class="flex justify-between items-center py-1.5 border-b border-gray-100">
+                            <span class="font-bold">02. Marka Stratejisi</span><span>04</span>
+                        </a>
+                        <a href="#chapter-03" class="flex justify-between items-center py-1.5 border-b border-gray-100">
+                            <span class="font-bold">03. Logo Sistemi</span><span>08</span>
+                        </a>
+                        <a href="#chapter-03-emblem" class="flex justify-between items-center py-1.5 border-b border-gray-100 pl-4">
+                            <span class="opacity-60">- Amblem Kullanımı</span><span>09</span>
+                        </a>
+                        <a href="#chapter-03-rules" class="flex justify-between items-center py-1.5 border-b border-gray-100 pl-4">
+                            <span class="opacity-60">- Do & Don't</span><span>10</span>
+                        </a>
+                        <a href="#chapter-04" class="flex justify-between items-center py-1.5 border-b border-gray-100">
+                            <span class="font-bold">04. Renk & Doku</span><span>14</span>
+                        </a>
+                    </div>
+                    <div class="space-y-3">
+                        <a href="#chapter-05" class="flex justify-between items-center py-1.5 border-b border-gray-100">
+                            <span class="font-bold">05. Tipografi Rehberi</span><span>18</span>
+                        </a>
+                        <a href="#chapter-05-blog" class="flex justify-between items-center py-1.5 border-b border-gray-100 pl-4">
+                            <span class="opacity-60">- İçerik Uygulaması</span><span>20</span>
+                        </a>
+                        <a href="#chapter-06" class="flex justify-between items-center py-1.5 border-b border-gray-100">
+                            <span class="font-bold">06. Görsel Dil & İkonlar</span><span>22</span>
+                        </a>
+                        <a href="#chapter-08" class="flex justify-between items-center py-1.5 border-b border-gray-100">
+                            <span class="font-bold">08. Ambalaj & Sunum</span><span>30</span>
+                        </a>
+                        <a href="#chapter-10" class="flex justify-between items-center py-1.5 border-b border-gray-100">
+                            <span class="font-bold">10. Dijital Tasarım</span><span>44</span>
+                        </a>
+                        <a href="#chapter-11" class="flex justify-between items-center py-1.5 border-b border-gray-100">
+                            <span class="font-bold">11. Sosyal Medya Ekleri</span><span>52</span>
+                        </a>
+                        <a href="#chapter-12" class="flex justify-between items-center py-1.5 border-b border-gray-100">
+                            <span class="font-bold">12. Ekosistem & Topluluk</span><span>58</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="page-num">02</div>
+        </div>
+
+        <!-- DİNAMİK SAYFALAR -->
+        <div id="dynamic-pages"></div>
+
+        <!-- ARKA KAPAK -->
+        <div id="back-cover" class="page bg-brand-charcoal text-white">
+            <div class="grid-layout items-center justify-center text-center">
+                <div class="col-span-12">
+                    <h1 class="font-brand font-bold text-6xl mb-4 lowercase">kilna</h1>
+                    <p class="font-mono text-[8px] tracking-[0.5em] uppercase opacity-40">Zanaatkar Seramik Pazaryeri</p>
+                    <div class="mt-20 space-y-2 font-mono text-[9px] opacity-60">
+                        <p>www.kilna.com</p>
+                        <p>@kilnaceramics</p>
+                        <p>Istanbul &bull; 2026</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const container = document.getElementById('dynamic-pages');
+        let pageCounter = 3;
+
+        const addPage = (id, title, content, bg = 'bg-white', text = 'text-brand-black') => {
+            const page = document.createElement('div');
+            page.id = id;
+            page.className = `page ${bg} ${text}`;
+            page.innerHTML = `
+                <div class="chapter-mark ${text.includes('white') ? 'opacity-20' : ''}">${title}</div>
+                <div class="grid-layout">
+                    <div class="col-span-12 pt-[30mm]">
+                        ${content}
+                    </div>
+                </div>
+                <div class="page-num ${text.includes('white') ? 'opacity-20' : ''}">${pageCounter.toString().padStart(2, '0')}</div>
+            `;
+            container.appendChild(page);
+            pageCounter++;
         };
 
-        // 1. Büyüme Kıyaslaması
-        new Chart(document.getElementById('growthChart'), {
-            type: 'bar',
-            data: {
-                labels: ['Ziyaret', 'Tıklama', 'Mesaj'],
-                datasets: [
-                    { label: 'Önceki', data: [7800, 350, 30], backgroundColor: '#E5E7EB' },
-                    { label: 'Güncel', data: [8500, 785, 39], backgroundColor: '#C5A059' }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { ...luxuryTooltip, legend: { position: 'bottom', labels: { boxWidth: 8, font: { size: 9 } } } },
-                scales: { y: { display: false }, x: { grid: { display: false } } }
-            }
-        });
+        const emblemSvg = `
+            <svg viewBox="0 0 100 100" class="w-full h-full">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="#C18C74" stroke-width="2" />
+                <circle cx="50" cy="50" r="30" fill="none" stroke="#C18C74" stroke-width="2" opacity="0.6" />
+                <circle cx="50" cy="50" r="20" fill="none" stroke="#C18C74" stroke-width="2" opacity="0.4" />
+                <circle cx="50" cy="50" r="12" fill="none" stroke="#C18C74" stroke-width="2" opacity="0.2" />
+                <circle cx="50" cy="50" r="3" fill="#C18C74" />
+            </svg>
+        `;
 
-        // 2. Yaş Grafiği
-        new Chart(document.getElementById('ageChart'), {
-            type: 'bar',
-            data: {
-                labels: ['18-24', '25-34', '35-44', '45+'],
-                datasets: [{
-                    data: [18.4, 39.6, 18.6, 23.4],
-                    backgroundColor: ['#F3F4F6', '#C5A059', '#D1D5DB', '#E5E7EB']
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { ...luxuryTooltip, legend: { display: false } },
-                scales: { y: { display: false }, x: { grid: { display: false } } }
-            }
-        });
+        // --- 01. MANİFESTO ---
+        addPage('chapter-01', '01. Manifesto', `<div class="h-full flex flex-col justify-center max-w-2xl"><span class="font-mono text-[10px] text-brand-clay mb-6 tracking-widest uppercase">Felsefemiz</span><h2 class="font-serif text-[42px] leading-[1.3] italic mb-12">"Kilna, toprağın sabrını modern insanın hızına bir antitez olarak sunar. Biz sadece nesne değil, bir duraklama anı vaat ediyoruz."</h2><div class="grid grid-cols-2 gap-12 font-sans text-xs leading-relaxed opacity-70"><p>Seramik; toprak, su, hava ve ateşin simyasıdır. Fabrikasyonun soğukluğuna yer bırakmaz. Kilna olarak her parmak izini markamızın bir parçası kabul ediyoruz.</p><p>'Wabi-Sabi' felsefesini e-ticaretin merkezine koyarak, zanaatkarın emeğini ve malzemenin dürüstlüğünü önceliklendiriyoruz.</p></div></div>`, 'bg-brand-black', 'text-white');
 
-        // 3. Bölge Grafiği
-        new Chart(document.getElementById('geoChart'), {
-            type: 'bar',
-            data: {
-                labels: ['TR', 'DE', 'IQ', 'AZ'],
-                datasets: [{
-                    data: [63.2, 7.7, 4.1, 4.4],
-                    backgroundColor: '#C5A059'
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { ...luxuryTooltip, legend: { display: false } },
-                scales: { x: { display: false }, y: { grid: { display: false } } }
-            }
-        });
+        // --- 02. STRATEJİ ---
+        addPage('chapter-02', '02. Strateji', `<h3 class="font-serif text-5xl italic mb-12">Pazar Konumlandırması</h3><div class="grid grid-cols-3 gap-8 mb-16"><div class="border-l border-black pl-4"><h4 class="font-bold text-xs uppercase mb-2">Hedef Kitle</h4><p class="text-[11px] opacity-60">"Bilinçli Tüketici". Nesnelerin hikayesine, kökenine ve sanatçısına değer veren modern kentli.</p></div><div class="border-l border-black pl-4"><h4 class="font-bold text-xs uppercase mb-2">Değer Önerisi</h4><p class="text-[11px] opacity-60">Küratörlük. Binlerce ürün arasından markanın ruhuna uygun en özel parçaları seçip sunmak.</p></div><div class="border-l border-black pl-4"><h4 class="font-bold text-xs uppercase mb-2">Vibe</h4><p class="text-[11px] opacity-60">Ham, dürüst, sakin ve zamansız. Trendlerden uzak, kalıcı güzellik arayışı.</p></div></div><div class="bg-brand-light p-12 mt-8"><h4 class="font-mono text-[9px] uppercase tracking-widest mb-4">Temel Slogan</h4><p class="font-serif italic text-3xl">"Topraktan sofraya, sabırla süzülen hikayeler."</p></div>`);
+
+        // --- 03. LOGO ---
+        addPage('chapter-03', '03. Logo Sistemi', `<div class="flex justify-between items-end mb-16 border-b border-black pb-4"><h3 class="font-serif text-4xl italic">Logotype Kullanımı</h3><span class="font-mono text-[9px]">PRIMARY SYSTEM</span></div><div class="flex items-center justify-center py-20 bg-gray-50 mb-12"><h1 class="font-brand font-bold text-[140px] lowercase tracking-tighter">kilna</h1></div><div class="grid grid-cols-2 gap-12 font-sans text-xs opacity-70"><div><h4 class="font-bold uppercase mb-4 text-brand-clay">Güvenli Alan</h4><p>Logonun etrafındaki boşluk, logonun yüksekliğinin yarısı (0.5x) kadar olmalıdır.</p></div><div><h4 class="font-bold uppercase mb-4 text-brand-clay">Minimum Boyut</h4><p>Baskı: 15mm genişlik. Dijital: 60px genişlik.</p></div></div>`);
+
+        // --- 03.1 AMBLEM (YENİ) ---
+        addPage('chapter-03-emblem', '03. Amblem Kullanımı', `
+            <div class="flex justify-between items-end mb-12 border-b border-black pb-4">
+                <h3 class="font-serif text-4xl italic">Marka Amblemi</h3>
+                <span class="font-mono text-[9px]">SYMBOL STANDARDS</span>
+            </div>
+            <div class="grid grid-cols-2 gap-12 h-[120mm]">
+                <div class="flex items-center justify-center bg-gray-50 aspect-square">
+                    <div class="w-64 h-64">${emblemSvg}</div>
+                </div>
+                <div class="flex flex-col justify-center space-y-8">
+                    <div>
+                        <h4 class="font-bold text-xs uppercase tracking-widest text-brand-clay mb-4">Sembolizm</h4>
+                        <p class="font-sans text-xs opacity-70 leading-relaxed">Amblemimiz, seramik torna tezgahının merkez kaç kuvvetini ve toprağın şekillenme anındaki sonsuz döngüsünü temsil eder. Eş merkezli halkalar, zanaatkarın sabrını ve ürünün katmanlı hikayesini simgeler.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-xs uppercase tracking-widest text-brand-clay mb-4">Kullanım Alanları</h4>
+                        <ul class="list-disc list-inside font-sans text-xs opacity-70 space-y-2">
+                            <li>Sosyal medya profil ikonları.</li>
+                            <li>Favicon ve mobil uygulama ikonları.</li>
+                            <li>Ürün altı mühürleri ve kabartmalar.</li>
+                            <li>Ambalaj pelur kağıdı desenleri.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        `);
+
+        // --- 03.2 DO & DON'T (YENİ) ---
+        addPage('chapter-03-rules', '03. Do & Don\'t', `
+            <h3 class="font-serif text-4xl italic mb-12">Do & Don't</h3>
+            <div class="grid grid-cols-2 grid-rows-2 gap-6 h-[150mm]">
+                <div class="border border-green-100 p-6 flex flex-col items-center justify-center relative">
+                    <span class="absolute top-4 right-4 text-green-500 font-bold text-xs uppercase">Do</span>
+                    <h1 class="font-brand font-bold text-5xl lowercase">kilna</h1>
+                    <p class="mt-8 font-mono text-[8px] opacity-40">Orijinal renk ve yazı tipi kullanımı.</p>
+                </div>
+                <div class="border border-red-100 p-6 flex flex-col items-center justify-center relative bg-gray-50 opacity-50">
+                    <span class="absolute top-4 right-4 text-red-500 font-bold text-xs uppercase">Don't</span>
+                    <h1 class="font-brand font-bold text-5xl lowercase rotate-12 text-blue-500">kilna</h1>
+                    <p class="mt-8 font-mono text-[8px] opacity-40">Döndürme veya kurumsal dışı renk.</p>
+                </div>
+                <div class="border border-red-100 p-6 flex flex-col items-center justify-center relative bg-gray-50 opacity-50">
+                    <span class="absolute top-4 right-4 text-red-500 font-bold text-xs uppercase">Don't</span>
+                    <h1 class="font-sans font-bold text-5xl lowercase">kilna</h1>
+                    <p class="mt-8 font-mono text-[8px] opacity-40">Yazı tipini değiştirme.</p>
+                </div>
+                <div class="border border-red-100 p-6 flex flex-col items-center justify-center relative bg-gray-50 opacity-50">
+                    <span class="absolute top-4 right-4 text-red-500 font-bold text-xs uppercase">Don't</span>
+                    <h1 class="font-brand font-bold text-5xl uppercase tracking-[1rem]">KILNA</h1>
+                    <p class="mt-8 font-mono text-[8px] opacity-40">Büyük harf ve aşırı harf aralığı.</p>
+                </div>
+            </div>
+        `);
+
+        // --- 04. RENK & DOKU ---
+        addPage('chapter-04', '04. Renk & Doku', `<h3 class="font-serif text-5xl italic mb-16">Renk Paleti</h3><div class="grid grid-cols-2 gap-4"><div class="bg-brand-charcoal h-48 flex flex-col justify-end p-6 text-white"><span class="font-mono text-[10px]">#2C2420</span><h4 class="font-serif italic text-xl">Yanık Kömür</h4></div><div class="bg-brand-clay h-48 flex flex-col justify-end p-6 text-white"><span class="font-mono text-[10px]">#C18C74</span><h4 class="font-serif italic text-xl">Terracotta</h4></div><div class="bg-brand-green h-48 flex flex-col justify-end p-6 text-white"><span class="font-mono text-[10px]">#4A5D4F</span><h4 class="font-serif italic text-xl">Adaçayı</h4></div><div class="bg-[#F5F2EB] border border-gray-100 h-48 flex flex-col justify-end p-6"><span class="font-mono text-[10px]">#F5F2EB</span><h4 class="font-serif italic text-xl">Ham Kağıt</h4></div></div>`);
+
+        // --- 05. TİPOGRAFİ ---
+        addPage('chapter-05', '05. Tipografi Rehberi', `<div class="space-y-12"><div><span class="font-mono text-[10px] text-brand-clay mb-2 block">Başlık Yazı Tipi</span><h1 class="font-serif text-7xl italic">Cormorant Garamond</h1></div><div><span class="font-mono text-[10px] text-brand-clay mb-2 block">Gövde Metni</span><h1 class="font-sans font-bold text-5xl">Manrope Medium</h1></div><div><span class="font-mono text-[10px] text-brand-clay mb-2 block">Teknik Detaylar</span><h1 class="font-mono text-4xl">Space Mono</h1></div></div>`);
+
+        // --- 05.1 BLOG UYGULAMASI (YENİ) ---
+        addPage('chapter-05-blog', '05. İçerik Uygulaması', `
+            <div class="bg-gray-50 -m-[20mm] p-20 h-full">
+                <div class="max-w-xl mx-auto bg-white p-12 shadow-sm h-full">
+                    <span class="font-mono text-[10px] text-brand-clay uppercase tracking-[0.3em]">16 Şubat 2026</span>
+                    <h1 class="font-serif text-[44px] italic leading-tight my-6">Toprağın Sessizliği: Modern Mekanlarda Seramik Sanatı</h1>
+                    <div class="w-12 h-px bg-brand-clay mb-8"></div>
+                    <p class="font-sans text-sm leading-relaxed text-gray-700 mb-6">
+                        Bir nesneyi elinize aldığınızda, onun sadece bir kap değil, bir süreç olduğunu hissettiniz mi hiç? Seramik, sanatçısının sabrını ve toprağın hafızasını üzerinde taşır. Modern minimalist mekanlarda, bir parça seramik sadece bir aksesuar değil, odanın nefes alan bir parçasıdır.
+                    </p>
+                    <h3 class="font-serif text-2xl italic mb-4">Zanaatın Katmanları</h3>
+                    <p class="font-sans text-sm leading-relaxed text-gray-700">
+                        Mudanya'nın kıyılarından toplanan çamurun, bin derecelik fırınlarda geçirdiği dönüşüm, insanoğlunun en eski simyasıdır. Kilna koleksiyonlarında yer alan her parça, bu kadim hikayenin birer elçisidir.
+                    </p>
+                    <div class="mt-12 pt-8 border-t border-gray-100 flex justify-between">
+                        <span class="font-mono text-[8px] uppercase">Okuma Süresi: 4 Dakika</span>
+                        <span class="font-brand font-bold text-[10px] lowercase">kilna journal</span>
+                    </div>
+                </div>
+            </div>
+        `);
+
+        // --- 06. GÖRSEL DİL & İKONLAR ---
+        addPage('chapter-06', '06. Görsel Dil & İkonlar', `<h3 class="font-serif text-5xl italic mb-12">İkonografi</h3><div class="grid grid-cols-4 gap-8 mb-16"><div class="aspect-square border border-gray-100 flex flex-col items-center justify-center p-4"><svg class="w-12 h-12 text-brand-clay mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" stroke-width="1"/></svg><span class="font-mono text-[8px] uppercase">Güneş Işığı</span></div><div class="aspect-square border border-gray-100 flex flex-col items-center justify-center p-4"><svg class="w-12 h-12 text-brand-clay mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9" stroke-width="1"/></svg><span class="font-mono text-[8px] uppercase">Yerel Üretim</span></div><div class="aspect-square border border-gray-100 flex flex-col items-center justify-center p-4"><svg class="w-12 h-12 text-brand-clay mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" stroke-width="1"/></svg><span class="font-mono text-[8px] uppercase">Zanaat</span></div><div class="aspect-square border border-gray-100 flex flex-col items-center justify-center p-4"><svg class="w-12 h-12 text-brand-clay mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" stroke-width="1"/></svg><span class="font-mono text-[8px] uppercase">Ekolojik</span></div></div>`);
+
+        // --- 08. AMBALAJ & SUNUM ---
+        addPage('chapter-08', '08. Ambalaj & Sunum', `<div class="grid grid-cols-2 gap-8 h-full"><div class="space-y-8"><h3 class="font-serif text-5xl italic">Unboxing Deneyimi</h3><p class="font-sans text-xs opacity-70 leading-relaxed">Ambalajımız, ürünün el yapımı doğasını korumalıdır. Plastik yerine kâğıt ve jüt ip kullanılır.</p><div class="aspect-[4/3] bg-brand-light flex items-center justify-center relative overflow-hidden border border-black/5"><span class="font-brand font-bold text-4xl lowercase opacity-30">kilna</span></div></div><div class="flex flex-col justify-between"><div class="border border-black p-8 text-center aspect-square flex flex-col justify-center bg-[#F5F2EB]/50"><span class="font-mono text-[8px] uppercase mb-4 tracking-widest">Ürün Etiketi</span><h4 class="font-serif italic text-2xl">Vazo No. 42</h4><div class="w-8 h-px bg-black mx-auto my-4"></div><p class="font-mono text-[9px]">SIRA NO: 001/250</p></div><div class="bg-brand-charcoal text-white p-8"><h5 class="font-bold text-[10px] uppercase mb-2">Sürdürülebilirlik</h5><p class="text-[10px] opacity-60">Tüm kutularımız FSC sertifikalıdır.</p></div></div></div>`);
+
+        // --- 08.2 KULLANIM & BİLGİ KARTLARI ---
+        addPage('chapter-08-cards', '08. Ambalaj Ekleri', `<div class="grid grid-cols-2 gap-8"><div class="border border-brand-clay/30 p-8 h-[140mm] bg-[#FDFDFD]"><span class="font-brand font-bold text-xl lowercase border-b border-brand-clay pb-2 mb-6 inline-block">kilna</span><h4 class="font-serif italic text-2xl mb-4 text-brand-clay">Kullanım & Bakım</h4><ul class="space-y-4 font-sans text-[10px] opacity-80 leading-relaxed"><li>01. Elde yıkama önerilir.</li><li>02. Gıda temasına uygundur.</li><li>03. Mikrodalga için uygun değildir.</li></ul></div><div class="bg-brand-green p-8 h-[140mm] text-white shadow-sm"><span class="font-brand font-bold text-xl lowercase mb-6 border-b border-white/20 pb-2 inline-block">kilna</span><h4 class="font-serif italic text-2xl mb-6">Sürdürülebilirlik</h4><p class="text-[10px] leading-relaxed">Gönderilerimizde plastik kullanmıyoruz. Yerel atölyeleri destekliyoruz.</p></div></div>`);
+
+        // --- 10. DİJİTAL TASARIM ---
+        addPage('chapter-10', '10. Dijital Tasarım', `<h3 class="font-serif text-5xl italic mb-12">Arayüz Standartları</h3><div class="grid grid-cols-12 gap-4"><div class="col-span-8 h-64 bg-white border border-gray-100 shadow-sm p-4 text-center mt-8"><h2 class="font-serif italic text-3xl">Yeni Koleksiyon</h2><button class="mt-4 px-6 py-2 bg-brand-black text-white text-[8px] uppercase tracking-widest">Keşfet</button></div></div>`);
+
+        // --- 11. SOSYAL MEDYA EKLERİ ---
+        addPage('chapter-11', '11. Sosyal Medya Ekleri', `<h3 class="font-serif text-5xl italic mb-12">Instagram Görsel Stili</h3><div class="grid grid-cols-3 gap-1 mb-8"><div class="aspect-square bg-gray-200"></div><div class="aspect-square bg-brand-charcoal flex items-center justify-center p-4 text-center text-white font-serif italic text-[10px]">"Toprakla kurulan kadim bağ."</div><div class="aspect-square bg-gray-100"></div></div>`);
+
+        // --- 12. EKOSİSTEM & TOPLULUK ---
+        addPage('chapter-12', '12. Ekosistem & UGC', `<h3 class="font-serif text-5xl italic mb-12">Ekosistem ve Topluluk</h3><div class="grid grid-cols-2 gap-12"><div class="space-y-6"><h4 class="font-bold text-xs uppercase tracking-widest text-brand-clay">UGC (Kullanıcı İçerikleri)</h4><p class="font-sans text-xs opacity-70 leading-relaxed">Filtresiz, doğal ışıkta çekimler ve ürünün ev ortamındaki hali teşvik edilmelidir.</p></div></div>`);
+
+        addPage('chapter-12-cards', '12. Mağaza Kartları', `<div class="flex flex-col items-center gap-12"><div class="w-[85mm] h-[54mm] bg-brand-charcoal text-white rounded-xl shadow-2xl p-8 flex flex-col justify-between"><span class="font-brand font-bold text-2xl lowercase">kilna</span><p class="font-serif italic text-xl opacity-80">Aslı Yılmaz</p></div><div class="w-[85mm] h-[54mm] bg-[#F5F2EB] border border-gray-200 rounded-xl shadow-xl p-8">10 Damgada Bir Özel Sanatçı Tasarımı Hediye.</div></div>`);
+
     </script>
+
+    <!-- Yazdırma Kontrolü -->
+    <div class="fixed bottom-6 right-6 flex gap-3 no-print z-[100]">
+        <button onclick="window.print()" class="bg-brand-clay text-white px-8 py-3 rounded-full font-mono text-[10px] uppercase tracking-widest shadow-2xl hover:bg-brand-charcoal transition-all">
+            PDF Olarak İndir (Baskı)
+        </button>
+    </div>
+
 </body>
 </html>
