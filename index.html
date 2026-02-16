@@ -3,411 +3,605 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>kilna | Brand Bible (Landscape Presentation)</title>
+    <title>kilna | Digital Brand Experience</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Manrope:wght@200;300;400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Space+Mono&family=Manrope:wght@200;300;400;500;600;700;800&family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Manrope', 'sans-serif'], 
-                        serif: ['Cormorant Garamond', 'serif'],
-                        mono: ['Space Mono', 'monospace'],
-                        brand: ['Comfortaa', 'cursive'], 
-                    },
                     colors: {
                         brand: {
                             black: '#121212',
                             gray: '#888888',
                             light: '#F4F4F4',
                             clay: '#C18C74',
-                            paper: '#FFFFFF',
+                            paper: '#F5F2EB',
                             green: '#4A5D4F',
                             charcoal: '#2C2420'
                         }
+                    },
+                    fontFamily: {
+                        sans: ['Manrope', 'sans-serif'],
+                        serif: ['Cormorant Garamond', 'serif'],
+                        mono: ['Space Mono', 'monospace'],
+                        display: ['Comfortaa', 'cursive'],
                     }
                 }
             }
         }
     </script>
+
     <style>
-        /* SUNUM ÖLÇÜLERİ: 1920x1080 (Landscape) */
-        :root { 
-            --slide-width: 1920px; 
-            --slide-height: 1080px; 
-        }
-        
-        body { 
-            background-color: #1a1a1a; 
+        /* Custom Styles for nuances not covered by Tailwind utility classes */
+        body {
+            background-color: #F5F2EB;
             color: #121212;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            -webkit-print-color-adjust: exact !important; 
-            print-color-adjust: exact !important; 
         }
         
-        #book-container { 
-            width: var(--slide-width); 
-            margin: 20px 0;
-        }
-        
-        .page { 
-            width: var(--slide-width); 
-            height: var(--slide-height); 
-            background: white; 
-            position: relative; 
-            overflow: hidden; 
-            margin-bottom: 20px; 
-            box-shadow: 0 40px 100px rgba(0,0,0,0.4); 
-            page-break-after: always; 
+        .texture-grain {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
         }
 
-        .grid-layout { 
-            display: grid; 
-            grid-template-columns: repeat(12, 1fr); 
-            grid-column-gap: 24px; 
-            padding: 80px 80px 80px 140px; /* Sol padding genişletildi */
-            height: 100%; 
-            position: relative; 
-            z-index: 10; 
+        /* Logo Construction - Pure CSS */
+        .logo-circle {
+            border-radius: 50%;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            border-style: solid;
+            border-color: currentColor;
+            transition: all 0.5s ease-in-out;
         }
 
-        .page-num { 
-            position: absolute; 
-            bottom: 40px; 
-            right: 80px; 
-            font-family: 'Space Mono', monospace; 
-            font-size: 10pt; 
-            color: #121212; 
-            opacity: 0.5;
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            height: 300px;
         }
 
-        .chapter-mark { 
-            position: absolute; 
-            top: 80px; 
-            left: 45px; 
-            font-family: 'Space Mono', monospace; 
-            font-size: 9pt; 
-            text-transform: uppercase; 
-            letter-spacing: 4px; 
-            transform-origin: top left; 
-            transform: rotate(-90deg) translateX(-100%); 
-            opacity: 0.3;
-            white-space: nowrap;
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
 
-        #sidebar { position: fixed; left: 2rem; top: 50%; transform: translateY(-50%); z-index: 100; }
-        .nav-link:hover .dot { transform: scale(1.5); background-color: #C18C74; }
-
-        @media screen and (max-width: 1920px) {
-            body { transform: scale(0.8); transform-origin: top center; }
-            #sidebar { transform: translateY(-50%) scale(1.2); }
+        /* Mockup Containers */
+        .mockup-card {
+            box-shadow: 0 20px 40px -10px rgba(44, 36, 32, 0.15);
+            transition: transform 0.3s ease;
         }
-
-        @media print { 
-            body { background: white; margin: 0; padding: 0; transform: none; } 
-            #book-container { margin: 0; width: 100%; box-shadow: none; } 
-            .page { margin: 0; box-shadow: none; page-break-after: always; border: none; } 
-            #sidebar, .no-print { display: none !important; } 
-            @page { size: 1920px 1080px; margin: 0; orientation: landscape; } 
+        .mockup-card:hover {
+            transform: translateY(-5px);
         }
     </style>
 </head>
-<body class="font-sans antialiased">
+<body class="antialiased selection:bg-brand-clay selection:text-white">
 
-    <!-- Navigasyon Yan Menü -->
-    <nav id="sidebar" class="no-print">
-        <ul class="space-y-4">
-            <li class="group"><a href="#p1" class="nav-link flex items-center gap-3"><span class="dot w-2 h-2 rounded-full bg-white/20 transition-all"></span><span class="text-[9px] text-white/40 group-hover:text-white uppercase tracking-widest transition-opacity opacity-0 group-hover:opacity-100 font-mono">Kapak</span></a></li>
-            <li class="group"><a href="#chapter-03" class="nav-link flex items-center gap-3"><span class="dot w-2 h-2 rounded-full bg-white/20 transition-all"></span><span class="text-[9px] text-white/40 group-hover:text-white uppercase tracking-widest transition-opacity opacity-0 group-hover:opacity-100 font-mono">Logo</span></a></li>
-            <li class="group"><a href="#chapter-07" class="nav-link flex items-center gap-3"><span class="dot w-2 h-2 rounded-full bg-white/20 transition-all"></span><span class="text-[9px] text-white/40 group-hover:text-white uppercase tracking-widest transition-opacity opacity-0 group-hover:opacity-100 font-mono">Evrak</span></a></li>
-            <li class="group"><a href="#chapter-11" class="nav-link flex items-center gap-3"><span class="dot w-2 h-2 rounded-full bg-white/20 transition-all"></span><span class="text-[9px] text-white/40 group-hover:text-white uppercase tracking-widest transition-opacity opacity-0 group-hover:opacity-100 font-mono">Dijital</span></a></li>
-            <li class="group"><a href="#chapter-13" class="nav-link flex items-center gap-3"><span class="dot w-2 h-2 rounded-full bg-white/20 transition-all"></span><span class="text-[9px] text-white/40 group-hover:text-white uppercase tracking-widest transition-opacity opacity-0 group-hover:opacity-100 font-mono">Ruh</span></a></li>
-        </ul>
+    <div class="texture-grain"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-40 bg-brand-paper/90 backdrop-blur-sm border-b border-brand-charcoal/5 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="font-display font-bold text-2xl tracking-tighter hover:text-brand-clay transition-colors lowercase">kilna</a>
+            
+            <div class="hidden md:flex space-x-8 font-mono text-xs tracking-widest uppercase text-brand-charcoal/60">
+                <a href="#manifesto" class="hover:text-brand-charcoal transition-colors">Manifesto</a>
+                <a href="#identity" class="hover:text-brand-charcoal transition-colors">Kimlik</a>
+                <a href="#applications" class="hover:text-brand-charcoal transition-colors">Uygulama</a>
+                <a href="#social" class="hover:text-brand-charcoal transition-colors">Medya</a>
+            </div>
+
+            <button class="md:hidden text-brand-charcoal" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                <span class="text-xl">☰</span>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-brand-paper border-t border-brand-charcoal/10 p-4">
+            <div class="flex flex-col space-y-4 font-mono text-xs uppercase">
+                <a href="#manifesto">Manifesto</a>
+                <a href="#identity">Kimlik</a>
+                <a href="#applications">Uygulama</a>
+                <a href="#social">Medya</a>
+            </div>
+        </div>
     </nav>
 
-    <div id="book-container">
+    <!-- Hero Section -->
+    <header id="manifesto" class="min-h-screen flex items-center justify-center pt-20 relative overflow-hidden">
+        <div class="absolute inset-0 z-0 opacity-5">
+            <!-- Decorative Large Logo -->
+            <div class="w-[800px] h-[800px] border-[40px] border-brand-charcoal rounded-full absolute -right-40 -top-40"></div>
+            <div class="w-[600px] h-[600px] border-[30px] border-brand-charcoal rounded-full absolute -right-[-60px] -top-[-60px]"></div>
+        </div>
 
-        <!-- P01: KAPAK -->
-        <div id="p1" class="page">
-            <div class="grid-layout text-brand-black">
-                <div class="col-span-12 flex flex-col justify-between h-full">
-                    <div class="mt-[120px] max-w-4xl">
-                        <div class="w-32 h-32 mb-12 text-brand-clay">
-                            <svg viewBox="0 0 100 100" class="w-full h-full">
-                                <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="2.2" />
-                                <circle cx="50" cy="50" r="28" fill="none" stroke="currentColor" stroke-width="2.2" opacity="0.6" />
-                                <circle cx="50" cy="50" r="18" fill="none" stroke="currentColor" stroke-width="2.2" opacity="0.4" />
-                                <circle cx="50" cy="50" r="4" fill="currentColor" />
-                            </svg>
+        <div class="max-w-4xl mx-auto px-6 text-center z-10">
+            <span class="font-mono text-brand-clay text-xs tracking-[0.4em] uppercase block mb-6 animate-pulse">Kurumsal Manifesto</span>
+            <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl italic leading-[1.1] mb-10 text-brand-charcoal">
+                "Kusurluluğun Bilgeliği,<br>Toprağın Sabrı."
+            </h1>
+            <p class="font-sans text-brand-charcoal/70 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-12">
+                Kilna, dijital dünyanın soğuk mükemmelliğine karşı, toprağın ham ve dürüst karakterini savunan bir başkaldırıdır. Biz sadece nesne değil, bir duraklama anı vaat ediyoruz.
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left mt-16">
+                <div class="p-6 border border-brand-charcoal/10 bg-white/50 backdrop-blur-sm hover:border-brand-clay/50 transition-colors group">
+                    <div class="text-brand-clay font-mono text-xs mb-3 group-hover:translate-x-1 transition-transform">01. STRATEJİ</div>
+                    <h3 class="font-serif text-2xl italic mb-2">Affordable Luxury</h3>
+                    <p class="text-sm opacity-60">Erişilebilir lüks zanaat. Sanat eseri ile günlük obje arasındaki ince çizgi.</p>
+                </div>
+                <div class="p-6 border border-brand-charcoal/10 bg-white/50 backdrop-blur-sm hover:border-brand-clay/50 transition-colors group">
+                    <div class="text-brand-clay font-mono text-xs mb-3 group-hover:translate-x-1 transition-transform">02. ARKETİP</div>
+                    <h3 class="font-serif text-2xl italic mb-2">The Sage</h3>
+                    <p class="text-sm opacity-60">Bilge Yaratıcı. Sadece satan değil, öğreten ve kürate eden bir rehber.</p>
+                </div>
+                <div class="p-6 border border-brand-charcoal/10 bg-white/50 backdrop-blur-sm hover:border-brand-clay/50 transition-colors group">
+                    <div class="text-brand-clay font-mono text-xs mb-3 group-hover:translate-x-1 transition-transform">03. VAAT</div>
+                    <h3 class="font-serif text-2xl italic mb-2">Dürüstlük</h3>
+                    <p class="text-sm opacity-60">Şeffaf üretim, yerel malzeme, plastiksiz kargo ve zamansız tasarım.</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Identity System -->
+    <section id="identity" class="py-24 bg-white relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+                
+                <!-- Left Col: Logo & Symbol -->
+                <div class="lg:col-span-5">
+                    <h2 class="font-serif text-4xl italic mb-8 border-b border-brand-charcoal/10 pb-4">Görsel İmza</h2>
+                    
+                    <!-- CSS Logo Construction -->
+                    <div class="bg-brand-paper p-12 flex flex-col items-center justify-center border border-brand-charcoal/5 mb-8 relative overflow-hidden group">
+                        <div class="relative w-48 h-48 text-brand-clay group-hover:text-brand-charcoal transition-colors duration-700">
+                            <!-- Outer Circle -->
+                            <div class="logo-circle w-full h-full border-[3px]"></div>
+                            <!-- Middle Circle -->
+                            <div class="logo-circle w-[70%] h-[70%] border-[3px] opacity-70"></div>
+                            <!-- Inner Circle -->
+                            <div class="logo-circle w-[40%] h-[40%] border-[3px] opacity-40"></div>
+                            <!-- Center Dot -->
+                            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[10%] h-[10%] bg-current rounded-full"></div>
                         </div>
-                        <h1 class="font-brand font-bold text-[180px] leading-[0.75] -ml-4 tracking-tighter lowercase">kilna</h1>
-                        <p class="font-serif italic text-5xl mt-10 text-brand-clay">Toprağın Ruhu.</p>
-                        <div class="w-24 h-[3px] bg-black mt-12"></div>
+                        <h1 class="font-display font-bold text-6xl lowercase tracking-tighter mt-8 text-brand-charcoal">kilna</h1>
+                        <span class="absolute bottom-4 right-4 font-mono text-[9px] text-brand-clay uppercase opacity-50">CSS Construction</span>
                     </div>
-                    <div class="border-t border-black/10 pt-12 flex justify-between items-end font-mono text-xs uppercase tracking-[0.3em] opacity-60">
+
+                    <div class="grid grid-cols-2 gap-4 text-xs font-sans opacity-70">
                         <div>
-                            <span class="block text-brand-clay font-bold mb-2">Doküman No. 2026-A</span>
-                            Görsel Kimlik Sistemi & Standartlar Kılavuzu
+                            <strong class="block text-brand-clay mb-1 font-mono uppercase">Amblem</strong>
+                            Torna tezgahının merkez kaç kuvvetini ve sabrı simgeler.
                         </div>
-                        <div class="text-right">
-                            <span class="block text-brand-clay font-bold mb-2">Versiyon 2.7</span>
-                            © 2026 KILNA - Tüm Hakları Saklıdır
+                        <div>
+                            <strong class="block text-brand-clay mb-1 font-mono uppercase">Logotype</strong>
+                            Comfortaa Bold. Daima küçük harf. Modern ve akışkan.
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- P02: İÇİNDEKİLER -->
-        <div id="toc" class="page">
-            <div class="grid-layout content-center">
-                <div class="col-span-12 mb-16 border-b border-black pb-10">
-                    <span class="font-mono text-xs text-brand-clay tracking-[0.4em] uppercase block mb-4">Presentation Index</span>
-                    <h2 class="font-serif text-[80px] italic leading-none">İçerik Dizini</h2>
-                </div>
-                <div class="col-span-12 grid grid-cols-2 gap-x-24 font-mono text-[11px] uppercase tracking-widest leading-loose">
-                    <div class="space-y-3">
-                        <a href="#chapter-01" class="flex justify-between items-center py-2 border-b border-gray-100"><b>01. Kurumsal Manifesto</b><span>03</span></a>
-                        <a href="#chapter-02" class="flex justify-between items-center py-2 border-b border-gray-100"><b>02. Marka Stratejisi</b><span>04</span></a>
-                        <a href="#chapter-03" class="flex justify-between items-center py-2 border-b border-gray-100 font-bold text-brand-clay"><b>03. Logo Sistemi</b><span>08</span></a>
-                        <a href="#chapter-03-emblem" class="flex justify-between items-center py-2 border-b border-gray-100 pl-8 opacity-60"><span>- Amblem Kullanımı</span><span>09</span></a>
-                        <a href="#chapter-03-rules" class="flex justify-between items-center py-2 border-b border-gray-100 pl-8 opacity-60"><span>- Do & Don't</span><span>10</span></a>
-                        <a href="#chapter-04" class="flex justify-between items-center py-2 border-b border-gray-100"><b>04. Renk & Doku</b><span>14</span></a>
-                    </div>
-                    <div class="space-y-3">
-                        <a href="#chapter-05" class="flex justify-between items-center py-2 border-b border-gray-100"><b>05. Tipografi Rehberi</b><span>18</span></a>
-                        <a href="#chapter-07" class="flex justify-between items-center py-2 border-b border-gray-100"><b>07. Kurumsal Evrak</b><span>26</span></a>
-                        <a href="#chapter-08" class="flex justify-between items-center py-2 border-b border-gray-100"><b>08. Ambalaj & Sunum</b><span>30</span></a>
-                        <a href="#chapter-10" class="flex justify-between items-center py-2 border-b border-gray-100"><b>10. Dijital Tasarım</b><span>44</span></a>
-                        <a href="#chapter-11" class="flex justify-between items-center py-2 border-b border-gray-100"><b>11. Sosyal Medya Ekleri</b><span>52</span></a>
-                        <a href="#chapter-13" class="flex justify-between items-center py-2 border-b border-brand-clay font-bold text-brand-clay"><b>13. Marka Ruhu & Analiz</b><span>62</span></a>
-                    </div>
-                </div>
-            </div>
-            <div class="page-num">02</div>
-        </div>
-
-        <div id="dynamic-pages"></div>
-
-        <!-- ARKA KAPAK -->
-        <div id="back-cover" class="page bg-brand-charcoal text-white">
-            <div class="grid-layout items-center justify-center text-center">
-                <div class="col-span-12">
-                    <h1 class="font-brand font-bold text-[120px] mb-8 lowercase">kilna</h1>
-                    <p class="font-mono text-xs tracking-[0.6em] uppercase opacity-40">Handcrafted Ceramics Marketplace</p>
-                    <div class="mt-32 space-y-4 font-mono text-xs opacity-60">
-                        <p>www.kilna.com</p>
-                        <p>@kilnaceramics</p>
-                        <p>Istanbul &bull; 2026</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const container = document.getElementById('dynamic-pages');
-        let pageCounter = 3;
-
-        const addPage = (id, title, content, bg = 'bg-white', text = 'text-brand-black') => {
-            const page = document.createElement('div');
-            page.id = id;
-            page.className = `page ${bg} ${text}`;
-            page.innerHTML = `
-                <div class="chapter-mark ${text.includes('white') ? 'opacity-20' : ''}">${title}</div>
-                <div class="grid-layout">
-                    <div class="col-span-12 pt-[60px]">
-                        ${content}
-                    </div>
-                </div>
-                <div class="page-num ${text.includes('white') ? 'opacity-20' : ''}">${pageCounter.toString().padStart(2, '0')}</div>
-            `;
-            container.appendChild(page);
-            pageCounter++;
-        };
-
-        const emblemSvg = `
-            <svg viewBox="0 0 100 100" class="w-full h-full">
-                <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="2" />
-                <circle cx="50" cy="50" r="29" fill="none" stroke="currentColor" stroke-width="2" opacity="0.6" />
-                <circle cx="50" cy="50" r="18" fill="none" stroke="currentColor" stroke-width="2" opacity="0.3" />
-                <circle cx="50" cy="50" r="4.5" fill="currentColor" />
-            </svg>
-        `;
-
-        // --- 01. MANİFESTO ---
-        addPage('chapter-01', '01. Manifesto', `
-            <div class="h-full flex flex-col justify-center max-w-5xl">
-                <span class="font-mono text-xs text-brand-clay mb-8 tracking-[0.5em] uppercase">The Philosophy</span>
-                <h2 class="font-serif text-[72px] leading-tight italic mb-16">"Kusurluluğun dürüstlüğü, toprağın kadim sabrı ve insan elinin sıcaklığı; Kilna bu simyanın evidir."</h2>
-                <div class="grid grid-cols-2 gap-24 font-sans text-lg opacity-80 leading-relaxed">
-                    <p>Seramik, zamanın ve ateşin kontrol edilemez simyasıdır. Kilna, bu simyayı bir lüks objesinden ziyade, hayatın içine sızan dürüst bir dost olarak tanımlar.</p>
-                    <p>Wabi-sabi ruhuyla, her çatlağı ve her doku farkını markanın parmak izi olarak kabul ederiz. Mükemmellik değil, ruh arıyoruz.</p>
-                </div>
-            </div>
-        `, 'bg-brand-black', 'text-white');
-
-        // --- 03. LOGO SİSTEMİ ---
-        addPage('chapter-03', '03. Logo Sistemi', `
-            <div class="flex justify-between items-end mb-20 border-b border-black pb-8">
-                <h3 class="font-serif text-[60px] italic">Logotype Anatomi</h3>
-                <span class="font-mono text-xs uppercase opacity-40 tracking-widest">Logo Standardization</span>
-            </div>
-            <div class="grid grid-cols-12 gap-12 items-center">
-                <div class="col-span-8 flex items-center justify-center py-32 bg-gray-50 border border-gray-100 rounded-lg">
-                    <h1 class="font-brand font-bold text-[220px] lowercase tracking-tighter">kilna</h1>
-                </div>
-                <div class="col-span-4 space-y-12">
+                <!-- Right Col: Color & Typography -->
+                <div class="lg:col-span-7 space-y-16">
+                    
+                    <!-- Colors -->
                     <div>
-                        <h4 class="font-bold uppercase mb-6 text-brand-clay tracking-[0.3em] text-sm">Konstrüksiyon</h4>
-                        <p class="text-sm leading-relaxed opacity-70">Logonun geometrik yapısı killi çamurun yumuşaklığını temsil eder. Daima küçük harf kullanılır; bu markanın alçakgönüllü ve dürüst zanaatkar karakterini simgeler.</p>
-                    </div>
-                    <div class="p-8 border-l-4 border-brand-clay bg-gray-50">
-                        <p class="text-xs font-mono uppercase opacity-40 mb-2">Tipografi:</p>
-                        <p class="text-sm font-bold">Comfortaa Custom Bold</p>
-                    </div>
-                </div>
-            </div>
-        `);
-
-        // --- 03.1 AMBLEM ---
-        addPage('chapter-03-emblem', '03. Amblem Kullanımı', `
-            <div class="grid grid-cols-2 gap-24 h-full items-center">
-                <div class="flex flex-col justify-center max-w-2xl">
-                    <h3 class="font-serif text-[72px] italic mb-12">Amblem</h3>
-                    <p class="font-sans text-xl opacity-70 leading-relaxed mb-12">Amblemimiz, seramik sanatının başlangıcı olan torna tezgahındaki merkez kaç kuvvetini temsil eder. Eş merkezli halkalar; zanaatkarın sabrını ve nesnenin katmanlı hikayesini simgeler.</p>
-                    <div class="p-8 bg-brand-light font-mono text-xs uppercase tracking-widest border border-black/5 rounded-sm">
-                        KULLANIM: Favicon, Mühür, Profil Resmi ve Desen.
-                    </div>
-                </div>
-                <div class="flex items-center justify-center text-brand-clay p-32 bg-gray-50 aspect-square border border-gray-100 rounded-full">
-                    <div class="w-full">${emblemSvg}</div>
-                </div>
-            </div>
-        `);
-
-        // --- 03.2 DO & DON'T ---
-        addPage('chapter-03-rules', '03. Logo Kullanım Kuralları', `
-            <h3 class="font-serif text-[50px] italic mb-16">Yanlış Kullanımlar</h3>
-            <div class="grid grid-cols-4 gap-8">
-                <div class="border border-red-50 p-12 flex flex-col items-center justify-center space-y-8 bg-gray-50/40 rounded-lg opacity-60">
-                    <h1 class="font-brand font-bold text-5xl lowercase rotate-45 text-red-400">kilna</h1>
-                    <p class="font-mono text-[9px] uppercase opacity-40">Eğerek Kullanmayın</p>
-                </div>
-                <div class="border border-red-50 p-12 flex flex-col items-center justify-center space-y-8 bg-gray-50/40 rounded-lg opacity-60">
-                    <h1 class="font-brand font-bold text-5xl uppercase tracking-[1rem]">KILNA</h1>
-                    <p class="font-mono text-[9px] uppercase opacity-40">Büyük Harf Kullanmayın</p>
-                </div>
-                <div class="border border-red-50 p-12 flex flex-col items-center justify-center space-y-8 bg-gray-50/40 rounded-lg opacity-60">
-                    <h1 class="font-serif font-bold text-5xl lowercase text-brand-clay">kilna</h1>
-                    <p class="font-mono text-[9px] uppercase opacity-40">Fontu Değiştirmeyin</p>
-                </div>
-                <div class="border border-red-50 p-12 flex flex-col items-center justify-center space-y-8 bg-gray-50/40 rounded-lg opacity-60">
-                    <div class="text-blue-500 scale-90">${emblemSvg}</div>
-                    <p class="font-mono text-[9px] uppercase opacity-40">Renk Dışına Çıkmayın</p>
-                </div>
-            </div>
-        `);
-
-        // --- 07. KURUMSAL EVRAK ---
-        addPage('chapter-07', '07. Kurumsal Evrak', `
-            <h3 class="font-serif text-[60px] italic mb-16">Kartvizit & İmza Tasarımı</h3>
-            <div class="flex flex-col gap-16">
-                <div class="flex gap-16">
-                    <!-- Kartvizit Ön -->
-                    <div class="w-[450px] h-[250px] bg-brand-charcoal text-white p-12 flex items-center justify-center shadow-2xl relative overflow-hidden rounded-md">
-                        <div class="absolute -right-12 -bottom-12 w-64 h-64 opacity-10 text-white">${emblemSvg}</div>
-                        <h1 class="font-brand font-bold text-7xl lowercase relative z-10">kilna</h1>
-                    </div>
-                    <!-- Kartvizit Arka -->
-                    <div class="w-[450px] h-[250px] bg-white border border-gray-100 p-12 flex flex-col justify-between shadow-2xl rounded-md">
-                        <div>
-                            <h4 class="font-serif italic text-4xl">Defne Yılmaz</h4>
-                            <p class="font-mono text-xs uppercase tracking-widest text-brand-clay font-bold mt-2">Kurucu & Küratör</p>
-                        </div>
-                        <div class="font-mono text-[10px] opacity-60 leading-relaxed">
-                            <p>defne@kilna.com | +90 532 123 45 67</p>
-                            <p>Galata, Istanbul, TR</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Mail İmzası -->
-                <div class="max-w-2xl border-t-2 border-brand-clay pt-10 flex gap-12 items-center bg-gray-50/50 p-10 rounded-md">
-                    <div class="w-24 h-24 text-brand-clay">${emblemSvg}</div>
-                    <div class="flex-1">
-                        <h5 class="font-sans font-bold text-2xl leading-tight">Defne Yılmaz</h5>
-                        <p class="font-mono text-xs opacity-40 uppercase mb-4 leading-none">kilna | Handmade Curator</p>
-                        <div class="flex gap-6 text-brand-clay font-mono text-[11px] font-bold">
-                            <span class="hover:underline cursor-pointer">kilna.com</span>
-                            <span class="hover:underline cursor-pointer">@kilnaceramics</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `);
-
-        // --- 10. DİJİTAL TASARIM ---
-        addPage('chapter-10', '10. Dijital Tasarım', `
-            <h3 class="font-serif text-[60px] italic mb-16">Web Arayüz Standartları</h3>
-            <div class="space-y-16">
-                <div>
-                    <h4 class="font-mono text-xs uppercase tracking-[0.4em] text-brand-clay mb-6">01. Desktop Navigation</h4>
-                    <div class="bg-white border border-gray-100 px-12 py-8 flex justify-between items-center shadow-lg rounded-sm">
-                        <span class="font-brand font-bold text-[40px] lowercase">kilna</span>
-                        <div class="flex gap-16 font-mono text-xs uppercase tracking-[0.3em] opacity-60 font-bold">
-                            <span class="border-b-2 border-brand-clay pb-1 text-brand-black opacity-100">Koleksiyon</span>
-                            <span class="hover:opacity-100 transition-opacity">Hikayemiz</span>
-                            <span class="hover:opacity-100 transition-opacity">Atölyeler</span>
-                        </div>
-                        <div class="w-10 h-10 rounded-full border-2 border-black/10"></div>
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-24">
-                    <div class="space-y-8">
-                        <h4 class="font-mono text-xs uppercase tracking-[0.4em] text-brand-clay">02. Primary Action</h4>
-                        <button class="w-full bg-brand-black text-white font-sans font-bold text-xs uppercase py-6 tracking-[0.3em] hover:bg-brand-clay transition-all shadow-xl">Sepete Ekle</button>
-                        <button class="w-full border-2 border-brand-black text-brand-black font-sans font-bold text-xs uppercase py-6 tracking-[0.3em] hover:bg-brand-black hover:text-white transition-all">Atölyeyi Gör</button>
-                    </div>
-                    <div class="space-y-8">
-                        <h4 class="font-mono text-xs uppercase tracking-[0.4em] text-brand-clay">03. Hover State</h4>
-                        <div class="flex items-center gap-6">
-                            <div class="w-16 h-16 rounded-full bg-brand-clay flex items-center justify-center text-white shadow-2xl shadow-brand-clay/40 transition-transform hover:scale-110 cursor-pointer">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                        <h2 class="font-serif text-4xl italic mb-8 border-b border-brand-charcoal/10 pb-4">Renk Paleti</h2>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <!-- Color Card 1 -->
+                            <div class="group cursor-pointer" onclick="copyToClipboard('#2C2420')">
+                                <div class="h-32 bg-brand-charcoal w-full rounded-sm shadow-sm group-hover:scale-105 transition-transform"></div>
+                                <div class="mt-3">
+                                    <p class="font-serif italic text-lg">Yanık Kömür</p>
+                                    <p class="font-mono text-xs opacity-50">#2C2420</p>
+                                </div>
                             </div>
-                            <span class="font-sans text-sm opacity-50 italic">Etkileşimli öğeler için yumuşak gölge ve Clay vurgusu.</span>
+                            <!-- Color Card 2 -->
+                            <div class="group cursor-pointer" onclick="copyToClipboard('#C18C74')">
+                                <div class="h-32 bg-brand-clay w-full rounded-sm shadow-sm group-hover:scale-105 transition-transform"></div>
+                                <div class="mt-3">
+                                    <p class="font-serif italic text-lg">Terracotta</p>
+                                    <p class="font-mono text-xs opacity-50">#C18C74</p>
+                                </div>
+                            </div>
+                            <!-- Color Card 3 -->
+                            <div class="group cursor-pointer" onclick="copyToClipboard('#4A5D4F')">
+                                <div class="h-32 bg-brand-green w-full rounded-sm shadow-sm group-hover:scale-105 transition-transform"></div>
+                                <div class="mt-3">
+                                    <p class="font-serif italic text-lg">Adaçayı</p>
+                                    <p class="font-mono text-xs opacity-50">#4A5D4F</p>
+                                </div>
+                            </div>
+                            <!-- Color Card 4 -->
+                            <div class="group cursor-pointer" onclick="copyToClipboard('#F5F2EB')">
+                                <div class="h-32 bg-brand-paper w-full rounded-sm shadow-sm border border-gray-200 group-hover:scale-105 transition-transform"></div>
+                                <div class="mt-3">
+                                    <p class="font-serif italic text-lg">Ham Kağıt</p>
+                                    <p class="font-mono text-xs opacity-50">#F5F2EB</p>
+                                </div>
+                            </div>
+                        </div>
+                        <p id="copy-feedback" class="text-xs text-brand-clay font-mono mt-2 h-4 transition-opacity opacity-0">Renk kodu kopyalandı!</p>
+                    </div>
+
+                    <!-- Interactive Typography -->
+                    <div>
+                        <h2 class="font-serif text-4xl italic mb-8 border-b border-brand-charcoal/10 pb-4">Tipografi Laboratuvarı</h2>
+                        
+                        <div class="bg-brand-paper p-8 rounded-sm border border-brand-charcoal/5">
+                            <input type="text" id="type-tester" value="Toprağın Ruhu. Zanaatın Evi." 
+                                class="w-full bg-transparent border-b border-brand-charcoal/20 focus:border-brand-clay outline-none text-2xl font-serif italic text-brand-charcoal mb-8 pb-2 placeholder-brand-charcoal/30">
+                            
+                            <div class="space-y-8">
+                                <div>
+                                    <span class="font-mono text-[10px] text-brand-clay uppercase tracking-widest block mb-2">Display (Cormorant Italic)</span>
+                                    <p id="preview-display" class="font-serif italic text-5xl md:text-6xl text-brand-charcoal break-words">Toprağın Ruhu. Zanaatın Evi.</p>
+                                </div>
+                                <div>
+                                    <span class="font-mono text-[10px] text-brand-clay uppercase tracking-widest block mb-2">Body (Manrope)</span>
+                                    <p id="preview-body" class="font-sans text-lg text-brand-charcoal/80 leading-relaxed max-w-xl break-words">Toprağın Ruhu. Zanaatın Evi.</p>
+                                </div>
+                                <div>
+                                    <span class="font-mono text-[10px] text-brand-clay uppercase tracking-widest block mb-2">Technical (Space Mono)</span>
+                                    <p id="preview-tech" class="font-mono text-sm text-brand-clay uppercase tracking-tighter break-words">Toprağın Ruhu. Zanaatın Evi.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visual Language (CSS Icons) -->
+    <section class="py-20 bg-brand-charcoal text-brand-paper">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-white/10 pb-6">
+                <div>
+                    <span class="font-mono text-brand-clay text-xs tracking-[0.4em] uppercase block mb-2">Görsel Dil</span>
+                    <h2 class="font-serif text-4xl italic">İkonografi Sistemi</h2>
+                </div>
+                <p class="text-xs font-sans opacity-60 mt-4 md:mt-0 max-w-md text-right">1.5px stroke kalınlığı. Açık uçlar. Yuvarlak köşeler.</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <!-- Icon 1: Handmade -->
+                <div class="p-8 border border-white/10 rounded-sm hover:border-brand-clay/50 transition-colors group flex flex-col items-center">
+                    <div class="w-16 h-16 mb-4 relative flex items-center justify-center">
+                        <!-- CSS Hand Icon Representation -->
+                        <div class="w-8 h-10 border-2 border-brand-paper rounded-full absolute top-2 left-4 group-hover:border-brand-clay transition-colors"></div>
+                        <div class="w-8 h-10 border-2 border-brand-paper rounded-full absolute top-2 right-4 group-hover:border-brand-clay transition-colors -ml-4"></div>
+                    </div>
+                    <span class="font-mono text-xs uppercase tracking-widest">El Yapımı</span>
+                </div>
+
+                <!-- Icon 2: Natural Light -->
+                <div class="p-8 border border-white/10 rounded-sm hover:border-brand-clay/50 transition-colors group flex flex-col items-center">
+                    <div class="w-16 h-16 mb-4 relative flex items-center justify-center">
+                        <div class="w-8 h-8 border-2 border-brand-paper rounded-full group-hover:border-brand-clay transition-colors"></div>
+                        <div class="absolute w-12 h-0.5 bg-brand-paper rotate-0 top-1/2 left-1/2 -translate-x-1/2 group-hover:bg-brand-clay"></div>
+                        <div class="absolute w-12 h-0.5 bg-brand-paper rotate-90 top-1/2 left-1/2 -translate-x-1/2 group-hover:bg-brand-clay"></div>
+                        <div class="absolute w-12 h-0.5 bg-brand-paper rotate-45 top-1/2 left-1/2 -translate-x-1/2 group-hover:bg-brand-clay"></div>
+                        <div class="absolute w-12 h-0.5 bg-brand-paper -rotate-45 top-1/2 left-1/2 -translate-x-1/2 group-hover:bg-brand-clay"></div>
+                    </div>
+                    <span class="font-mono text-xs uppercase tracking-widest">Doğal Işık</span>
+                </div>
+
+                <!-- Icon 3: Local -->
+                <div class="p-8 border border-white/10 rounded-sm hover:border-brand-clay/50 transition-colors group flex flex-col items-center">
+                    <div class="w-16 h-16 mb-4 relative flex items-center justify-center">
+                        <div class="w-8 h-10 border-2 border-brand-paper rounded-t-full rounded-b-none border-b-0 group-hover:border-brand-clay transition-colors"></div>
+                        <div class="w-8 h-0.5 bg-brand-paper absolute bottom-4 group-hover:bg-brand-clay"></div>
+                        <div class="w-2 h-2 bg-brand-paper rounded-full absolute top-6 group-hover:bg-brand-clay"></div>
+                    </div>
+                    <span class="font-mono text-xs uppercase tracking-widest">Yerel</span>
+                </div>
+
+                <!-- Icon 4: Eco -->
+                <div class="p-8 border border-white/10 rounded-sm hover:border-brand-clay/50 transition-colors group flex flex-col items-center">
+                    <div class="w-16 h-16 mb-4 relative flex items-center justify-center">
+                        <div class="w-8 h-8 border-2 border-brand-paper rounded-tr-[20px] rounded-bl-[20px] group-hover:border-brand-clay transition-colors"></div>
+                        <div class="w-0.5 h-10 bg-brand-paper absolute -rotate-45 group-hover:bg-brand-clay"></div>
+                    </div>
+                    <span class="font-mono text-xs uppercase tracking-widest">Ekolojik</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Applications Mockups (Interactive Tabs) -->
+    <section id="applications" class="py-24 bg-brand-paper">
+        <div class="max-w-6xl mx-auto px-6">
+            <h2 class="font-serif text-4xl italic mb-10 text-center text-brand-charcoal">Kurumsal Uygulamalar</h2>
+            
+            <!-- Tabs -->
+            <div class="flex justify-center space-x-4 mb-12">
+                <button class="tab-btn active px-6 py-2 font-mono text-xs uppercase tracking-widest border-b-2 border-brand-clay text-brand-charcoal" data-target="card">Kartvizit</button>
+                <button class="tab-btn px-6 py-2 font-mono text-xs uppercase tracking-widest border-b-2 border-transparent text-brand-gray hover:text-brand-charcoal" data-target="pack">Ambalaj</button>
+                <button class="tab-btn px-6 py-2 font-mono text-xs uppercase tracking-widest border-b-2 border-transparent text-brand-gray hover:text-brand-charcoal" data-target="web">Web UI</button>
+            </div>
+
+            <!-- Content Area -->
+            <div class="relative min-h-[500px]">
+                
+                <!-- Business Card Mockup -->
+                <div id="mockup-card" class="mockup-content absolute inset-0 flex flex-col md:flex-row gap-8 items-center justify-center transition-opacity duration-500">
+                    <!-- Front -->
+                    <div class="mockup-card w-[350px] h-[200px] bg-brand-charcoal text-white relative p-8 flex items-center justify-center overflow-hidden rounded">
+                        <div class="absolute -right-10 -bottom-10 w-40 h-40 border-2 border-white/10 rounded-full"></div>
+                        <div class="absolute -right-10 -bottom-10 w-32 h-32 border-2 border-white/10 rounded-full"></div>
+                        <h1 class="font-display font-bold text-5xl lowercase relative z-10">kilna</h1>
+                    </div>
+                    <!-- Back -->
+                    <div class="mockup-card w-[350px] h-[200px] bg-white text-brand-charcoal p-8 flex flex-col justify-between rounded border border-gray-100">
+                        <div>
+                            <h4 class="font-serif italic text-2xl">Defne Yılmaz</h4>
+                            <p class="font-mono text-[10px] uppercase text-brand-clay tracking-widest mt-1">Founder & Curator</p>
+                        </div>
+                        <div class="text-xs font-sans opacity-70 space-y-1">
+                            <p>defne@kilnaceramics.com</p>
+                            <p>+90 532 000 00 00</p>
+                            <p>Galata, Istanbul</p>
                         </div>
                     </div>
                 </div>
-            </div>
-        `);
 
-        // --- 13. MARKA RUHU & ANALİZ (FINAL) ---
-        addPage('chapter-13', '13. Marka Ruhu & Analiz', `
-            <div class="h-full flex flex-col justify-center items-center text-center max-w-5xl mx-auto">
-                <div class="w-24 h-24 text-brand-clay mb-16">${emblemSvg}</div>
-                <h3 class="font-serif text-[84px] italic mb-12 leading-tight">Kusurluluğun Bilgeliği</h3>
-                <div class="space-y-12 font-sans text-[22px] leading-relaxed text-gray-700">
-                    <p>Kilna, dijital dünyanın soğuk mükemmelliğine karşı, toprağın ham ve dürüst karakterini savunan bir başkaldırıdır. Bu marka, sadece nesneler sunmaz; zanaatkarın sabrını ve fırının sürprizlerini modern yaşamın merkezine bir huzur durağı olarak koyar.</p>
-                    <p><b>Çalışmanın Analizi:</b> Bu marka rehberi, Kilna'nın "High-End Craft" konumlandırmasını akademik bir zarafetle temellendirmektedir. Ambalajdan web sitesine kadar her temas noktası, kullanıcının markaya sadece 'bakmasını' değil, onu 'hissetmesini' amaçlar. Bu çalışma, markanın ruhunu görsel bir disiplinle mühürleyen doğru bir tasarım manifestosudur.</p>
+                <!-- Packaging Mockup -->
+                <div id="mockup-pack" class="mockup-content absolute inset-0 flex items-center justify-center transition-opacity duration-500 opacity-0 pointer-events-none">
+                    <div class="mockup-card w-[400px] h-[300px] bg-[#D6C0A0] relative flex items-center justify-center shadow-xl transform rotate-[-2deg]">
+                        <!-- Tape -->
+                        <div class="absolute w-full h-12 bg-white/90 top-1/2 transform -translate-y-1/2 flex items-center justify-center gap-8 overflow-hidden">
+                            <span class="font-display font-bold text-brand-charcoal opacity-20">kilna</span>
+                            <span class="font-display font-bold text-brand-charcoal opacity-20">kilna</span>
+                            <span class="font-display font-bold text-brand-charcoal opacity-20">kilna</span>
+                        </div>
+                        <!-- Sticker -->
+                        <div class="absolute top-8 right-8 w-24 h-32 bg-white p-4 shadow-sm transform rotate-[5deg] flex flex-col items-center justify-between">
+                            <div class="w-2 h-2 rounded-full bg-brand-charcoal"></div>
+                            <div class="text-center">
+                                <span class="block font-serif italic text-lg">El Yapımı</span>
+                                <span class="block font-mono text-[6px] uppercase tracking-widest mt-1">Istanbul</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="mt-24 pt-12 border-t border-gray-100 w-full flex flex-col items-center opacity-40">
-                    <p class="font-mono text-xs uppercase tracking-[0.6em] mb-4">KILNA VISUAL STANDARDS • 2026</p>
-                </div>
-            </div>
-        `, 'bg-white');
 
+                <!-- Web UI Mockup -->
+                <div id="mockup-web" class="mockup-content absolute inset-0 flex items-center justify-center transition-opacity duration-500 opacity-0 pointer-events-none">
+                    <div class="mockup-card w-full max-w-[600px] bg-white rounded-lg border border-gray-200 overflow-hidden shadow-2xl">
+                        <!-- Browser Header -->
+                        <div class="bg-gray-50 border-b border-gray-100 p-3 flex gap-2">
+                            <div class="w-3 h-3 rounded-full bg-red-300"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-300"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-300"></div>
+                        </div>
+                        <!-- UI Body -->
+                        <div class="p-8">
+                            <div class="flex justify-between items-center mb-12">
+                                <span class="font-display font-bold text-xl">kilna</span>
+                                <div class="flex gap-4 text-[10px] font-mono uppercase tracking-widest text-gray-400">
+                                    <span>Shop</span>
+                                    <span>About</span>
+                                    <span>Journal</span>
+                                </div>
+                            </div>
+                            <div class="flex gap-8">
+                                <div class="w-1/2 bg-brand-light aspect-[3/4] relative group cursor-pointer overflow-hidden">
+                                    <div class="absolute inset-0 bg-brand-charcoal/0 group-hover:bg-brand-charcoal/5 transition-colors"></div>
+                                    <div class="absolute bottom-4 left-4">
+                                        <p class="font-serif italic text-lg">Vazo No.1</p>
+                                        <p class="font-mono text-xs text-brand-clay">1.250 TL</p>
+                                    </div>
+                                </div>
+                                <div class="w-1/2 flex flex-col justify-center">
+                                    <h3 class="font-serif text-3xl italic mb-4">Toprağın Formu</h3>
+                                    <p class="font-sans text-xs text-gray-500 leading-relaxed mb-6">El yapımı, doğal sırlı, %100 yerel kil kullanılarak üretilmiştir.</p>
+                                    <button class="bg-brand-charcoal text-white font-sans text-xs font-bold uppercase py-3 px-6 tracking-widest hover:bg-brand-clay transition-colors">Sepete Ekle</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Media & Analytics -->
+    <section id="social" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+                
+                <!-- Content Strategy Chart -->
+                <div>
+                    <h3 class="font-serif text-3xl italic mb-8">İçerik Stratejisi</h3>
+                    <div class="chart-container">
+                        <canvas id="contentChart"></canvas>
+                    </div>
+                    <div class="mt-8 grid grid-cols-3 gap-4 text-center">
+                        <div>
+                            <span class="block text-2xl font-serif italic text-brand-charcoal">40%</span>
+                            <span class="text-xs font-mono uppercase text-gray-400">Ürün</span>
+                        </div>
+                        <div>
+                            <span class="block text-2xl font-serif italic text-brand-clay">30%</span>
+                            <span class="text-xs font-mono uppercase text-gray-400">Doku</span>
+                        </div>
+                        <div>
+                            <span class="block text-2xl font-serif italic text-brand-green">30%</span>
+                            <span class="text-xs font-mono uppercase text-gray-400">Süreç</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulated Instagram Grid -->
+                <div>
+                    <h3 class="font-serif text-3xl italic mb-8">Izgara Kürasyonu</h3>
+                    <div class="grid grid-cols-3 gap-1 bg-gray-50 p-2 border border-gray-100">
+                        <!-- These represent the 'plan', using colors to denote content types -->
+                        <div class="aspect-square bg-brand-paper flex items-center justify-center text-xs font-mono text-brand-charcoal/30 hover:bg-brand-paper/80 transition-colors cursor-pointer" title="Product Shot">Prod</div>
+                        <div class="aspect-square bg-brand-charcoal flex items-center justify-center text-xs font-mono text-white/30 hover:bg-brand-charcoal/90 transition-colors cursor-pointer" title="Texture Macro">Tex</div>
+                        <div class="aspect-square bg-brand-clay/20 flex items-center justify-center text-xs font-mono text-brand-clay hover:bg-brand-clay/30 transition-colors cursor-pointer" title="Process / Human">Proc</div>
+                        
+                        <div class="aspect-square bg-brand-green/20 flex items-center justify-center text-xs font-mono text-brand-green hover:bg-brand-green/30 transition-colors cursor-pointer" title="Lifestyle">Life</div>
+                        <div class="aspect-square bg-white flex items-center justify-center text-brand-charcoal p-4 text-center border border-gray-100">
+                            <p class="font-serif italic text-[10px]">"Sessizlik"</p>
+                        </div>
+                        <div class="aspect-square bg-brand-paper flex items-center justify-center text-xs font-mono text-brand-charcoal/30" title="Product Shot">Prod</div>
+                        
+                        <div class="aspect-square bg-brand-charcoal flex items-center justify-center text-xs font-mono text-white/30" title="Texture Macro">Tex</div>
+                        <div class="aspect-square bg-brand-clay/20 flex items-center justify-center text-xs font-mono text-brand-clay" title="Process / Human">Proc</div>
+                        <div class="aspect-square bg-brand-paper flex items-center justify-center text-xs font-mono text-brand-charcoal/30" title="Product Shot">Prod</div>
+                    </div>
+                    <p class="mt-4 text-xs font-sans text-gray-500 italic">"Izgara, bir ürün kataloğu değil; markanın görsel günlüğüdür."</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-charcoal text-white py-20 text-center">
+        <div class="max-w-4xl mx-auto px-6">
+            <h2 class="font-display font-bold text-6xl md:text-9xl text-brand-paper/10 lowercase mb-8">kilna</h2>
+            <p class="font-serif italic text-2xl mb-8 text-brand-clay">Toprağa Dokun, Ruhu Hisset.</p>
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-[10px] font-mono uppercase tracking-widest text-white/40">
+                <span>© 2026 Kilna Marketplace</span>
+                <span>Istanbul, TR</span>
+                <span>Brand Identity Guide v1.0</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // 1. Copy to Clipboard Functionality
+        function copyToClipboard(text) {
+            // Create a temporary input to copy from
+            const tempInput = document.createElement("input");
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+
+            // Visual feedback
+            const feedback = document.getElementById('copy-feedback');
+            feedback.innerText = `${text} kopyalandı!`;
+            feedback.style.opacity = '1';
+            setTimeout(() => {
+                feedback.style.opacity = '0';
+            }, 2000);
+        }
+
+        // 2. Typography Tester Live Update
+        const typeInput = document.getElementById('type-tester');
+        const previews = [
+            document.getElementById('preview-display'),
+            document.getElementById('preview-body'),
+            document.getElementById('preview-tech')
+        ];
+
+        if(typeInput) {
+            typeInput.addEventListener('input', (e) => {
+                const val = e.target.value || "Toprağın Ruhu. Zanaatın Evi.";
+                previews.forEach(el => el.innerText = val);
+            });
+        }
+
+        // 3. Tab Switching Logic
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.mockup-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all btns
+                tabBtns.forEach(b => {
+                    b.classList.remove('border-brand-clay', 'text-brand-charcoal');
+                    b.classList.add('border-transparent', 'text-brand-gray');
+                });
+                // Add active class to clicked btn
+                btn.classList.remove('border-transparent', 'text-brand-gray');
+                btn.classList.add('border-brand-clay', 'text-brand-charcoal');
+
+                // Hide all contents
+                contents.forEach(c => {
+                    c.style.opacity = '0';
+                    c.style.pointerEvents = 'none';
+                });
+
+                // Show target content
+                const target = document.getElementById(`mockup-${btn.dataset.target}`);
+                target.style.opacity = '1';
+                target.style.pointerEvents = 'auto';
+            });
+        });
+
+        // 4. Initialize Chart.js
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('contentChart').getContext('2d');
+            
+            // Custom font config
+            Chart.defaults.font.family = "'Space Mono', monospace";
+            Chart.defaults.font.size = 10;
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Ürün (40%)', 'Doku (30%)', 'Süreç (30%)'],
+                    datasets: [{
+                        data: [40, 30, 30],
+                        backgroundColor: [
+                            '#2C2420', // Charcoal
+                            '#C18C74', // Clay
+                            '#4A5D4F'  // Green
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false // Using custom legend in HTML
+                        },
+                        tooltip: {
+                            backgroundColor: '#F5F2EB',
+                            titleColor: '#121212',
+                            bodyColor: '#121212',
+                            borderColor: '#2C2420',
+                            borderWidth: 1,
+                            padding: 10,
+                            displayColors: true,
+                            boxPadding: 4
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+        });
     </script>
-
-    <!-- Yazdırma Kontrolü -->
-    <div class="fixed bottom-10 right-10 flex gap-6 no-print z-[100]">
-        <button onclick="window.print()" class="bg-brand-clay text-white px-12 py-5 rounded-full font-mono text-xs uppercase tracking-[0.3em] shadow-2xl hover:bg-brand-charcoal transition-all font-bold">
-            PDF Olarak İndir (Nihai Sunum)
-        </button>
-    </div>
-
 </body>
 </html>
